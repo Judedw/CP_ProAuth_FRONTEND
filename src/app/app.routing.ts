@@ -8,7 +8,7 @@ import { AuthGuard } from './shared/services/auth/auth.guard';
 export const rootRouterConfig: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'cruds',
     pathMatch: 'full'
   },
 
@@ -28,11 +28,11 @@ export const rootRouterConfig: Routes = [
     component: AdminLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      {
-        path: 'dashboard',
-        loadChildren: './views/dashboard/dashboard.module#DashboardModule',
-        data: { title: 'Dashboard', breadcrumb: 'DASHBOARD' }
-      },
+      // {
+      //   path: 'dashboard',
+      //   loadChildren: './views/dashboard/dashboard.module#DashboardModule',
+      //   data: { title: 'Dashboard', breadcrumb: 'DASHBOARD' }
+      // },
       {
         path: 'form',
         loadChildren: './views/form/form.module#FormModule',
@@ -118,6 +118,16 @@ export const rootRouterConfig: Routes = [
         path: 'productCrud',
         loadChildren: './views/product-crud/product-crud.module#ProductCrudModule',
         data: { title: 'Product Catalogue', breadcrumb: '' }
+      } ,
+      {
+        path: 'surveys',
+        loadChildren: './views/survey/survey.module#SurveyModule',
+        data: { title: 'Survey Service', breadcrumb: '' }
+      },
+      {
+        path: 'shop',
+        loadChildren: './views/shop/shop.module#ShopModule',
+        data: { title: 'Shop', breadcrumb: 'SHOP'}
       }
     ]
   },

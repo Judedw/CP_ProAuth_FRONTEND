@@ -41,6 +41,7 @@ export class HeaderSideComponent implements OnInit {
     this.notificPanel.toggle();
   }
   toggleSidenav() {
+    console.log('TOGGLE NAV')
     if(this.layoutConf.sidebarStyle === 'closed') {
       return this.layout.publishLayoutChange({
         sidebarStyle: 'full'
@@ -52,6 +53,8 @@ export class HeaderSideComponent implements OnInit {
   }
 
   toggleCollapse() {
+
+    console.log('TOGGLE CLSPS')
     // compact --> full
     if(this.layoutConf.sidebarStyle === 'compact') {
       return this.layout.publishLayoutChange({

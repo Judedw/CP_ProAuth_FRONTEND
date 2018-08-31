@@ -11,7 +11,6 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss'],
   animations: [egretAnimations]
 })
 export class ProductsComponent implements OnInit, OnDestroy {
@@ -37,7 +36,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.categories$ = this.shopService.getCategories();
     this.buildFilterForm(this.shopService.initialFilters);
-    
+
     setTimeout(() => {
       this.loader.open();
     });

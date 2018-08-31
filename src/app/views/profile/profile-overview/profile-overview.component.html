@@ -116,7 +116,7 @@
       </mat-card-content>
     </mat-card>
   </div>
-  
+
   <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
     <mat-card class="default">
       <mat-card-title>Support Tickets</mat-card-title>
@@ -134,7 +134,7 @@
             <mat-chip mat-sm-chip [color]="'warn'" [selected]="t.isOpen">{{t.isOpen ? 'active' : 'closed'}}</mat-chip>
           </mat-list-item>
         </mat-list>
-        <div class="text-center">
+        <div class="text-right">
           <button mat-button class="full-width">View all</button>
         </div>
       </mat-card-content>
@@ -178,10 +178,10 @@
       <mat-card-title>Activity</mat-card-title>
       <mat-card-content class="p-0" fxLayout="column">
         <div class="activity-data">
-          <ngx-datatable class="material bg-white" 
-          [columnMode]="'force'"  
+          <ngx-datatable class="material bg-white"
+          [columnMode]="'force'"
           [headerHeight]="50"
-          [footerHeight]="50" 
+          [footerHeight]="50"
           [rowHeight]="50"
           [limit]="4"
           [rows]="activityData">

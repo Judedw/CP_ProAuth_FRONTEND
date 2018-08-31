@@ -10,12 +10,12 @@
 
 <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
   <mat-card-content class="p-0">
-    <ngx-datatable class="material bg-white" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="50"
+    <ngx-datatable class="material bg-white" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'"
       [limit]="10" [rows]="rows" [columns]="">
 
       <ngx-datatable-column name="Client" [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          {{ row?.client.id }}
+          {{ row?.client.name }}
         </ng-template>
       </ngx-datatable-column>
 
@@ -57,15 +57,13 @@
 
       <ngx-datatable-column name="Actions" [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <button mat-icon-button mat-sm-button color="primary" class="mr-1" (click)="openProductPopup(row)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button mat-sm-button color="warn" (click)="deleteProduct(row)">
-            <mat-icon>delete</mat-icon>
-          </button>
+          <button mat-icon-button mat-sm-button color="primary" class="mr-1" (click)="openProductPopup(row)"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button mat-sm-button color="warn" class="mr-1" (click)="deleteProduct(row)"><mat-icon>delete</mat-icon></button>
+          <button mat-icon-button mat-sm-button   (click)="downloadCsv(row)"><mat-icon>file_download</mat-icon></button>
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>
   </mat-card-content>
 
 </mat-card>
+

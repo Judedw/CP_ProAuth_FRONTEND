@@ -13,7 +13,9 @@ import { Subscription } from "../../../../../node_modules/rxjs";
 import { egretAnimations } from "../../../shared/animations/egret-animations";
 import { AppConfirmService } from "../../../shared/services/app-confirm/app-confirm.service";
 
-import * as moment from 'moment';
+import * as moment from "moment";
+import { AppFileDownloadService } from "../../../shared/services/file-download.service";
+import { AppDataConversionService } from '../../../shared/services/data-conversion.service';
 
 @Component({
   selector: "app-product-filter-table",
@@ -31,7 +33,9 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private loader: AppLoaderService,
     private errDialog: AppErrorService,
-    private confirmService: AppConfirmService
+    private confirmService: AppConfirmService,
+    private downloadService: AppFileDownloadService,
+    private conversionService : AppDataConversionService
   ) {}
 
   ngOnInit() {
@@ -42,6 +46,12 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
     if (this.getProductsSub) {
       this.getProductsSub.unsubscribe();
     }
+  }
+
+  downloadCsv(selectedRow) {
+    const fileName  =  selectedRow.name + '_' + selectedRow.code + '_' + selectedRow.batchNumber;
+    const csvData =  this.conversionService.convertToCsv(selectedRow.productDetails);
+    this.downloadService.downloadFile({ name: fileName, type : 'csv' , data : csvData });
   }
 
   updateFilter(event) {
@@ -128,10 +138,10 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
       }
       this.loader.open();
 
-      console.log('RES obj :')
+      console.log("RES obj :");
       console.log(res);
 
-      res.expireDate =  moment( res.expireDate).format('YYYY-MM-DD');
+      res.expireDate = moment(res.expireDate).format("YYYY-MM-DD");
 
       if (isNew) {
         this.prodService.addProduct(res, this.rows).subscribe(
@@ -151,7 +161,7 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
       } else {
         this.prodService.updateProduct(data.id, res).subscribe(
           response => {
-            console.log(response.content)
+            console.log(response.content);
             this.rows = this.rows.map(i => {
               if (i.id === data.id) {
                 return Object.assign({}, i, response.content);

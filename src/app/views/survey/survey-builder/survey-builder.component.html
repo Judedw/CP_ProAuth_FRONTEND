@@ -1,0 +1,83 @@
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+  <mat-card-title>
+    <div class="card-title-text">Survey Builder</div>
+    <mat-divider></mat-divider>
+  </mat-card-title>
+  <mat-card-content class="p-0">
+
+    <form [formGroup]="questionForm" (ngSubmit)="submit()">
+      <mat-horizontal-stepper linear #stepper>
+        <mat-step [stepControl]="questionForm">
+
+          <ng-template matStepLabel>Setup your questions</ng-template>
+
+          <div class="text-right mb-1">
+            <div class="m-333 text-right">
+              <button  type='button' mat-raised-button class="mb-05" (click)="addQuestion()" color="accent">Add Question</button>
+            </div>
+          </div>
+
+          <mat-card formArrayName='questions' *ngFor="let answer of questionForm.controls['questions'].controls; let i=index" class="p-1"
+            [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+
+            <mat-card-title class="p-0">
+              <small class="text-muted"> Question {{i+1}} </small>
+            </mat-card-title>
+
+            <div [formGroupName]="i">
+              <div fxFlex="100" class="pr-1">
+                <mat-form-field class="full-width">
+                  <input matInput formControlName="name" required name="lable" placeholder="Type your Question">
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="50" class="pr-1">
+                <mat-form-field class="full-width">
+                  <mat-select formControlName="answerTemplate" required placeholder="Choose Answer Template">
+                    <mat-option>None</mat-option>
+                    <mat-option value="product">Product Survey</mat-option>
+                    <mat-option value="evote">Evote Survey</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="20" class="pr-0">
+                <button  type='button' mat-raised-button *ngIf="questionForm.controls['questions'].controls.length > 1" (click)='removeQuestion(i)' color="warn">Remove</button>
+              </div>
+
+            </div>
+          </mat-card>
+
+          <div>
+            <button type='button' color="primary" [disabled]="questionForm.invalid" mat-button matStepperNext>Next</button>
+          </div>
+
+
+        </mat-step>
+
+        <mat-step [optional]="isOptional">
+
+          <ng-template matStepLabel>Review</ng-template>
+          <mat-form-field>
+            <input matInput placeholder="Address" required>
+          </mat-form-field>
+          <div>
+            <button type='button' mat-button color="primary" matStepperPrevious>Back</button>
+            <button type='button' mat-button color="primary" matStepperNext>Next</button>
+          </div>
+
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Done</ng-template>
+          You are now done.
+          <div>
+            <button type='button' mat-button color="primary" matStepperPrevious>Back</button>
+            <button type='submit' mat-button color="primary" (click)="stepper.reset()">Submit</button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </form>
+
+
+  </mat-card-content>
+</mat-card>

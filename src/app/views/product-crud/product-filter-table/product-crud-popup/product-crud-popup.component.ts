@@ -9,13 +9,27 @@ import {
 import { CrudService } from "../../../cruds/crud.service";
 import { Subscription } from "../../../../../../node_modules/rxjs";
 import { ResponseModel } from "../../../../model/ResponseModel.model";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators
+} from "@angular/forms";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
 import { debounceTime, switchMap}from 'rxjs/operators';
 import { Clients,Content } from './../../../../model/ClientModel.model';
 import {Observable} from 'rxjs/observable';
 import { DateValidator} from '../../../../utility/dateValidator';
 
+
+
+
+
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+
+import 'rxjs/add/operator/switchMap';
+import { startWith, map } from "../../../../../../node_modules/rxjs/operators";
+import { Observable } from 'rxjs/Observable';
 
 
 
@@ -55,8 +69,8 @@ export class ProductCrudPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ProductCrudPopupComponent>,
     private clientService: CrudService,
-    private fb: FormBuilder    
-    
+    private fb: FormBuilder
+
   ) {}
 
   ngOnInit() {
@@ -65,17 +79,23 @@ export class ProductCrudPopupComponent implements OnInit {
 
     this.getAllClients();
     this.buildProductForm(this.data.payload);
-        
+
     this.filteredClient = this.productForm.get('client').valueChanges
     .pipe(
       debounceTime(200),
-      switchMap(value => 
-        this.clientService.search({name:value},1       
-        ))  
-            
+      switchMap(value =>
+        this.clientService.search({name:value},1
+        ))
+
     );
-    
+
   }
+
+  getClientSuggestions(){
+    this.getClientSub = this.clientService.getClientSuggestions().subscribe(data =>{
+      this.response = data;
+      this.clients = this.response.content;
+     }) }
 
   getAllClients() {
     this.getClientSub = this.clientService.getItems().subscribe(data => {
@@ -86,6 +106,7 @@ export class ProductCrudPopupComponent implements OnInit {
 
   buildProductForm(fieldItem) {
     this.productForm = this.fb.group({
+      clientName: [fieldItem.clientName || ""],
       client: [fieldItem.client || ""],
       code: [fieldItem.code || "", Validators.required],
       name: [fieldItem.name || "", Validators.required],
@@ -93,11 +114,11 @@ export class ProductCrudPopupComponent implements OnInit {
       batchNumber: [fieldItem.batchNumber || "", Validators.required],
       quantity: [fieldItem.quantity || "", Validators.required],
       expireDate: [fieldItem.expireDate || "", Validators.required]
-    });    
+    });
   }
 
   submit() {
     this.dialogRef.close(this.productForm.value);
   }
-  
+
 }

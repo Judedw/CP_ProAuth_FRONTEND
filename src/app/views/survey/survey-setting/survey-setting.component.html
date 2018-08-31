@@ -1,0 +1,55 @@
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+  <mat-card-title>
+    <div class="card-title-text">Survey Settings</div>
+    <mat-divider></mat-divider>
+  </mat-card-title>
+  <mat-card-content class="p-0">
+    <div class="text-muted mb-1 m-1 text-left">
+      you can configure your survey question answer with adding different options per answer. To setup your predefined answer template,
+      navigate to "Answser template section " by clicking "Create Answer template" button.
+    </div>
+    <div class="profile-actions text-right mb-1">
+      <div class="m-333 text-right">
+        <button mat-raised-button (click)="openAnswerTemplatePopup({},true)" class="mb-05" color="accent">Create Answer template</button>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Answer templates
+          </mat-panel-title>
+          <mat-panel-description>
+            View or Edit Predefined Answer template
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <ngx-datatable class="material bg-white" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'"
+          [limit]="5" [rows]="answerTemplates">
+
+          <ngx-datatable-column name="Template Name" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.name}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Answer type" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.type}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Action" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <button mat-icon-button mat-sm-button color="primary" class="mr-1"><mat-icon>edit</mat-icon></button>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+
+
+      </mat-expansion-panel>
+    </mat-accordion>
+
+  </mat-card-content>
+</mat-card>

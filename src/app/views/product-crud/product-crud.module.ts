@@ -13,7 +13,7 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatAutocompleteModule
-  
+
 } from "../../../../node_modules/@angular/material";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { ProductCrudService } from "./product-crud.service";
@@ -22,6 +22,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { CrudService } from "../cruds/crud.service";
 import { PositiveNumberOnly } from "../../directives/PositiveNumber.directive";
+import { DateValidator } from "../../directives/DateValidator.directive";
 
 
 @NgModule({
@@ -37,17 +38,15 @@ import { PositiveNumberOnly } from "../../directives/PositiveNumber.directive";
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatIconModule,     
-    MatInputModule,    
-    MatButtonModule,
+    MatIconModule,
     MatAutocompleteModule,
     RouterModule.forChild(ProductCrudRouts)
   ],
   declarations: [
     ProductFilterTableComponent,
     ProductCrudPopupComponent,
-    PositiveNumberOnly
-    
+    PositiveNumberOnly,
+    DateValidator
   ],
   providers: [ProductCrudService, CrudService],
   entryComponents: [ProductCrudPopupComponent]

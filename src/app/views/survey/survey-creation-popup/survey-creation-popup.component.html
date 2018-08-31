@@ -1,0 +1,31 @@
+<h1 matDialogTitle>{{data.title}}</h1>
+
+<form [formGroup]="surveyForm" (ngSubmit)="submit()">
+  <mat-dialog-content class="mat-typography">
+
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+      <div fxFlex="100" class="pr-1">
+        <mat-form-field class="full-width">
+          <input matInput [formControl]="surveyForm.controls['name']" required name="name" placeholder="Survey name">
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="100" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-select [formControl]="surveyForm.controls['surveyType']" [(ngModel)]="selectedType" required placeholder="Survey Type">
+            <mat-option  *ngFor="let type of surveyTypes" [value]="type">{{type.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+
+
+  <mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" routerLink="/surveys/builder_v1" [disabled]="surveyForm.invalid">Save</button>
+    <span fxFlex></span>
+    <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Cancel</button>
+  </mat-dialog-actions>
+
+</form>

@@ -16,7 +16,7 @@ export class CrudService {
   clientApiUrl: string = environment.baseApiURL + "clients/";
   httpOptions = {
     headers: new HttpHeaders({
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     })
   };
 
@@ -24,6 +24,12 @@ export class CrudService {
 
   getItems(): Observable<any> {
     return this.http.get(this.clientApiUrl).pipe(catchError(this.handleError));
+  }
+
+  getClientSuggestions(): Observable<any> {
+    return this.http
+      .get<string>(this.clientApiUrl + "suggestions")
+      .pipe(catchError(this.handleError));
   }
 
   addItem(item, items: any[]): Observable<any> {

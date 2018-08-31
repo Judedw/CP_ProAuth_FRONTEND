@@ -2,28 +2,27 @@
 <form [formGroup]="productForm" (ngSubmit)="submit()">
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
 
-    <div fxFlex="34" class="pr-1">      
+    <div fxFlex="34" class="pr-1">
         <mat-form-field class="full-width">
           <input matInput placeholder="Choose a client" [matAutocomplete]="auto" [formControl]="productForm.controls['client']" >
-        </mat-form-field>  
-          
+        </mat-form-field>
+
         <mat-autocomplete #auto="matAutocomplete" >
             <mat-option *ngFor="let user of (filteredClient | async)?.content" [value]="user">
               <span>{{ user.name }}</span>
-              
             </mat-option>
-        </mat-autocomplete>      
+        </mat-autocomplete>
     </div>
 
     <div fxFlex="33" class="pr-1">
       <mat-form-field class="full-width">
-        <input matInput [formControl]="productForm.controls['code']"  required name="proCode" placeholder="Product Code">
+        <input matInput [formControl]="productForm.controls['code']" required name="proCode" placeholder="Product Code">
       </mat-form-field>
     </div>
 
     <div fxFlex="33" class="pr-1">
       <mat-form-field class="full-width">
-        <input matInput [formControl]="productForm.controls['name']"  required name="name" placeholder="Product Name">
+        <input matInput [formControl]="productForm.controls['name']" required name="name" placeholder="Product Name">
       </mat-form-field>
     </div>
 
@@ -41,13 +40,14 @@
 
     <div fxFlex="33" class="pr-1">
       <mat-form-field class="full-width">
-        <input type="number" matInput name="quantity" [formControl]="productForm.controls['quantity']" min="1" postiveNumberOnly required placeholder="Quantity">
+        <input type="number" matInput name="quantity" [formControl]="productForm.controls['quantity']" min="1" postiveNumberOnly
+          required placeholder="Quantity">
       </mat-form-field>
     </div>
 
     <div fxFlex="33" class="pr-1">
       <mat-form-field class="full-width">
-        <input matInput name="expireDate" [min]="tomorrow" [matDatepicker]="picker" [formControl]="productForm.controls['expireDate']" required placeholder="Expire Date">
+        <input matInput name="expireDate" [matDatepicker]="picker"  [formControl]="productForm.controls['expireDate']" required placeholder="Expire Date">
         <mat-datepicker-toggle matSuffix [for]="picker">
           <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
         </mat-datepicker-toggle>

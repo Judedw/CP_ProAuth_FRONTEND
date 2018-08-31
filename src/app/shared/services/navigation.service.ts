@@ -1,32 +1,32 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 
 interface IMenuItem {
-  type: string,       // Possible values: link/dropDown/icon/separator/extLink
-  name?: string,      // Used as display text for item and title for separator type
-  state?: string,     // Router state
-  icon?: string,      // Material icon name
-  tooltip?: string,   // Tooltip text 
-  disabled?: boolean, // If true, item will not be appeared in sidenav.
-  sub?: IChildItem[], // Dropdown items
-  badges?: IBadge[]
+  type: string; // Possible values: link/dropDown/icon/separator/extLink
+  name?: string; // Used as display text for item and title for separator type
+  state?: string; // Router state
+  icon?: string; // Material icon name
+  tooltip?: string; // Tooltip text
+  disabled?: boolean; // If true, item will not be appeared in sidenav.
+  sub?: IChildItem[]; // Dropdown items
+  badges?: IBadge[];
 }
 interface IChildItem {
-  type?: string,
-  name: string,       // Display text
-  state?: string,     // Router state
-  icon?: string,
-  sub?: IChildItem[]
+  type?: string;
+  name: string; // Display text
+  state?: string; // Router state
+  icon?: string;
+  sub?: IChildItem[];
 }
 
 interface IBadge {
-  color: string;      // primary/accent/warn/hex color codes(#fff000)
-  value: string;      // Display text
+  color: string; // primary/accent/warn/hex color codes(#fff000)
+  value: string; // Display text
 }
 
 @Injectable()
 export class NavigationService {
-  constructor() { }
+  constructor() {}
 
   // defaultMenu: IMenuItem[] = [
   //   {
@@ -393,74 +393,34 @@ export class NavigationService {
   //   }
   // ]
   iconMenu: IMenuItem[] = [
-    // {
-    //   name: 'HOME',
-    //   type: 'icon',
-    //   tooltip: 'Home',
-    //   icon: 'home',
-    //   state: 'home'
-    // },
-    // {
-    //   name: 'PROFILE',
-    //   type: 'icon',
-    //   tooltip: 'Profile',
-    //   icon: 'person',
-    //   state: 'profile/overview'
-    // },
-    // {
-    //   name: 'TOUR',
-    //   type: 'icon',
-    //   tooltip: 'Tour',
-    //   icon: 'flight_takeoff',
-    //   state: 'tour'
-    // },
-    // {
-    //   type: 'separator',
-    //   name: 'Main Items'
-    // },
     {
-      name: 'DASHBOARD',
-      type: 'link',
-      tooltip: 'Dashboard',
-      icon: 'dashboard',
-      state: 'dashboard',
-      badges: [{ color: 'accent', value: '100+' }],
+      name: "Clients",
+      type: "link",
+      tooltip: "Client management",
+      icon: "person",
+      state: "cruds/ngx-table"
     },
     {
-      name: 'Clients',
-      type: 'link',
-      tooltip: 'Client management',
-      icon: 'person',
-      state: 'cruds/ngx-table'
+      name: "Product Catalogue",
+      type: "link",
+      tooltip: "Product management",
+      icon: "assignment",
+      state: "productCrud/show"
     },
     {
-      name: 'Product Catalogue',
-      type: 'link',
-      tooltip: 'Product management',
-      icon: 'assignment',
-      state: 'productCrud/show'
+      name: "Survey Service",
+      type: "link",
+      tooltip: "Survey Management",
+      icon: "data_usage",
+      state: "surveys"
     },
     {
-      name: 'Form',
-      type: 'link',
-      tooltip: 'Form',
-      icon: 'favorite',
-      state: 'form/showForm'
+      name: "Form",
+      type: "link",
+      tooltip: "Form",
+      icon: "favorite",
+      state: "form/showForm"
     }
-    //,
-    // {
-    //   name: 'ECOMMERCE',
-    //   type: 'dropDown',
-    //   tooltip: 'Shop',
-    //   icon: 'shopping_cart',
-    //   state: 'shop',
-    //   sub: [
-    //     { name: 'PRODUCTS', state: '' },
-    //     { name: 'PRODUCT DETAILS', state: 'products/5a9ae2106f155194e5c95d67' },
-    //     { name: 'CART', state: 'cart' },
-    //     { name: 'CECKOUT', state: 'checkout' }
-    //   ]
-    // },
     // {
     //   name: 'INBOX',
     //   type: 'link',
@@ -626,7 +586,7 @@ export class NavigationService {
     //   sub: [
     //     {
     //       name: 'Level Two', type: 'dropDown', state: 'fake-1', sub: [
-    //         { name: 'Level Three', state: 'fake-2' }, 
+    //         { name: 'Level Three', state: 'fake-2' },
     //         { name: 'Level Three', state: 'fake-3' }
     //       ]
     //     },
@@ -641,11 +601,11 @@ export class NavigationService {
     //   icon: 'library_books',
     //   state: 'http://egret-doc.mhrafi.com/'
     // }
-  ]
+  ];
 
   // Icon menu TITLE at the very top of navigation.
   // This title will appear if any icon type item is present in menu.
-  iconTypeMenuTitle: string = 'Frequently Accessed';
+  iconTypeMenuTitle: string = "Frequently Accessed";
   // sets iconMenu as default;
   menuItems = new BehaviorSubject<IMenuItem[]>(this.iconMenu);
   // navigation component has subscribed to this Observable
@@ -657,14 +617,14 @@ export class NavigationService {
   // different user type.
   publishNavigationChange(menuType: string) {
     switch (menuType) {
-      case 'separator-menu':
+      case "separator-menu":
         //this.menuItems.next(this.separatorMenu);
         break;
-      case 'icon-menu':
+      case "icon-menu":
         this.menuItems.next(this.iconMenu);
         break;
       default:
-        //this.menuItems.next(this.defaultMenu);
+      //this.menuItems.next(this.defaultMenu);
     }
   }
 }

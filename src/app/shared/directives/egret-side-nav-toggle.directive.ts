@@ -13,10 +13,11 @@ export class EgretSideNavToggleDirective implements OnInit, OnDestroy {
   constructor(
     private media: ObservableMedia,
     @Host() @Self() @Optional() public sideNav: MatSidenav
-  ) { 
+  ) {
   }
 
   ngOnInit() {
+    console.log("CALLED EGRET")
     this.initSideNav();
   }
 
