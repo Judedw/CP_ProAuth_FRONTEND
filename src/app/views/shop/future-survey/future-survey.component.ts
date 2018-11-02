@@ -129,7 +129,8 @@ export class FutureSurveyComponent implements OnInit {
         "imagepicker",
         "matrix",
         "rating",
-        "comment"
+        "comment",
+        "panel"
       ]
     };
     this.editor = new SurveyEditor.SurveyEditor(
