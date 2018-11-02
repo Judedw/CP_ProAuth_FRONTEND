@@ -11,7 +11,7 @@ import { throwError, Observable } from "rxjs";
 
 @Injectable()
 export class ProductCrudService {
-  productApiUrl: string = environment.productApiURL + "products/";
+  productApiUrl: string = environment.productApiURL + "products";
   recentProduct: any;
   httpOptions = {
     headers: new HttpHeaders({
@@ -43,6 +43,10 @@ export class ProductCrudService {
 
   getAllProducts(): Observable<any> {
     return this.http.get(this.productApiUrl).pipe(catchError(this.handleError));
+  }
+
+  getPageProducts(pageNo): Observable<any> {
+    return this.http.get(this.productApiUrl+"?pageNumber="+pageNo).pipe(catchError(this.handleError));
   }
 
   removeProduct(row, items): Observable<any> {

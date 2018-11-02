@@ -23,6 +23,11 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
   rows: any[];
   columns = [];
   temp = [];
+
+  // pagination
+  pageNo = 1;
+
+
   public getProductsSub: Subscription;
   updatable: boolean;
 
@@ -34,7 +39,7 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
     private confirmService: AppConfirmService,
     private downloadService: AppFileDownloadService,
     private conversionService: AppDataConversionService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getAllProduct();
@@ -75,7 +80,7 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
 
     if (!columns.length) return;
 
-    const rows = this.temp.filter(function(data) {
+    const rows = this.temp.filter(function (data) {
       for (let i = 0; i <= columns.length; i++) {
         let column = columns[i];
         if (
@@ -96,6 +101,26 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
     this.getProductsSub = this.prodService.getAllProducts().subscribe(
       successResp => {
         this.rows = this.temp = successResp.content;
+        console.log(this.rows);
+      },
+      error => {
+        this.loader.close();
+        console.log(error);
+        console.log(error.status);
+        this.errDialog.showError({
+          title: "Error",
+          status: error.status,
+          type: "http_error"
+        });
+      }
+    );
+  }
+
+  getPageProduct() {
+    this.getProductsSub = this.prodService.getPageProducts(this.pageNo).subscribe(
+      successResp => {
+        this.rows = this.temp = successResp.content;
+        console.log(this.rows);
       },
       error => {
         this.loader.close();
@@ -231,11 +256,14 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
   //     }
   //   );
   // }
+
+
+
 }
 
 export class CSVDTO {
   productDetails: any;
   authenticationCode: any;
 
-  constructor(public proDetails: any, public authCodes: any) {}
+  constructor(public proDetails: any, public authCodes: any) { }
 }

@@ -415,13 +415,6 @@ export class NavigationService {
       state: "surveys"
     },
     {
-      name: "Form",
-      type: "link",
-      tooltip: "Form",
-      icon: "description",
-      state: "form/showForm"
-    },
-    {
       name: "E-Vote",
       type: "link",
       tooltip: "E-Vote",
