@@ -22,6 +22,8 @@ widgets.sortablejs(SurveyKo);
 widgets.ckeditor(SurveyKo);
 widgets.autocomplete(SurveyKo);
 widgets.bootstrapslider(SurveyKo);
+widgets.microphone(SurveyKo);
+
 
 var CkEditor_ModalEditor = {
   afterRender: function(modalEditor, htmlElement) {
@@ -97,12 +99,14 @@ export class FutureSurveyComponent implements OnInit {
         choices: fullClients
       });
 
+
       this.setupProperty();
       this.loadSurveyEditor();
     });
   }
 
   setupProperty() {
+    
     SurveyKo.JsonObject.metaData.addProperty(
       "questionbase",
       "popupdescription:text"
@@ -114,6 +118,9 @@ export class FutureSurveyComponent implements OnInit {
       "questionId"
     ).readOnly = true;
 
+    
+    
+    
     //SurveyEditor.StylesManager.applyTheme("winterstone");
   }
 
@@ -153,6 +160,7 @@ export class FutureSurveyComponent implements OnInit {
     //Set the name property different from the default value
     //and set the tag property to a generated GUID value.
     this.editor.onQuestionAdded.add(function(sender, options) {
+      
       var q = options.question;
       var d = q.surveyValue.currentPageValue.name;
       var t = q.getType();
@@ -161,6 +169,8 @@ export class FutureSurveyComponent implements OnInit {
       d + "Q" + t[0].toUpperCase() + t.substring(1) + questionCounter;
       questionCounter++;
     });
+    
+    
 
     if (this.jsonContent) {
       let js: any = JSON.parse(this.jsonContent);
