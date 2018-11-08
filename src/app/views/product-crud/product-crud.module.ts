@@ -28,6 +28,7 @@ import { DateValidator } from "../../directives/DateValidator.directive";
 import { FileUploadModule } from "ng2-file-upload";
 import { SurveyService } from '../survey/survey.service';
 import { SharedModule } from '../../shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { SharedModule } from '../../shared/shared.module';
     MatProgressBarModule,
     SharedModule,
     MatToolbarModule,
+    FormsModule ,
     RouterModule.forChild(ProductCrudRouts)
   ],
   declarations: [

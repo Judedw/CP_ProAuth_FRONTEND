@@ -5,19 +5,19 @@
 <div class="m-333">
   <!-- <span fxFlex></span> -->
   <button mat-raised-button class="mb-05" color="primary" (click)="openProductPopup({}, true)">Add Product</button>
+  <span fxFlex></span>
+  <p class="mat-select-lable"> Page Size: </p>
+  <mat-select class="mat-raised-select" [(value)]="pageSize" (selectionChange)="changeValue()" placeholder="Favorite food">
+    <mat-option [value]="10">10</mat-option>
+    <mat-option [value]="20">20</mat-option>
+  </mat-select>
 </div>
 
 
 <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
   <mat-card-content class="p-0">
-    <ngx-datatable class="material bg-white" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'"
+    <!-- <ngx-datatable class="material bg-white" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'"
       [limit]="10" [rows]="rows" [columns]="">
-
-      <!-- <ngx-datatable-column name="Client" [flexGrow]="1">
-        <ng-template let-row="row" ngx-datatable-cell-template>
-          {{ row?.client.name }}
-        </ng-template>
-      </ngx-datatable-column> -->
 
       <ngx-datatable-column name="Product Code" [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
@@ -57,13 +57,113 @@
 
       <ngx-datatable-column name="Actions" [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <button mat-icon-button mat-sm-button color="primary" class="mr-1" (click)="openProductPopup(row)"><mat-icon>edit</mat-icon></button>
-          <button mat-icon-button mat-sm-button color="warn" class="mr-1" (click)="deleteProduct(row)"><mat-icon>delete</mat-icon></button>
-          <button mat-icon-button mat-sm-button   (click)="downloadCsv(row)"><mat-icon>file_download</mat-icon></button>
+          <button mat-icon-button mat-sm-button color="primary" class="mr-1" (click)="openProductPopup(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button mat-sm-button color="warn" class="mr-1" (click)="deleteProduct(row)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button mat-sm-button (click)="downloadCsv(row)">
+            <mat-icon>file_download</mat-icon>
+          </button>
         </ng-template>
       </ngx-datatable-column>
-    </ngx-datatable>
+    </ngx-datatable> -->
+
+
+    <!-- <table class="table table-hover">
+      <thead>
+        <th class="th-sm" *ngFor="let column of columns;"> {{column}}
+          <i class="fa fa-sort float-right" aria-hidden="true"></i>
+        </th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Tiger Nixon</td>
+          <td>System Architect</td>
+          <td>Edinburgh</td>
+          <td>61</td>
+          <td>2011/04/25</td>
+          <td>$320,800</td>
+          <td>$320,800</td>
+        </tr>
+      </tbody>
+    </table> -->
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <!-- <th scope="col" *ngFor="let column of columns;">{{column}}</th> -->
+          <th class="pl-1">Product Code</th>
+          <th>Product Name</th>
+          <th width="250px">Description</th>
+          <th>Batch Number</th>
+          <th>Quantity</th>
+          <th>Expire Date</th>
+          <th width="150px" class="">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rows;">
+          <td class="pt-1 pb-1 pl-1">{{row?.code}}</td>
+          <td class="pt-1 pb-1">{{ row?.name }}</td>
+          <td class="pt-1 pb-1">{{ row?.description }}</td>
+          <td class="pt-1 pb-1 text-cente">{{ row?.batchNumber }}</td>
+          <td class="pt-1 pb-1">{{ row?.quantity }}</td>
+          <td class="pt-1 pb-1">{{ row?.expireDate }}</td>
+          <td class="pt-1 pb-1 pr-1">
+            <div class="pb-1">
+              <div class="col-lg-4 col-sm-4 col-xs-4">
+                <button mat-icon-button mat-sm-button color="primary" class="" (click)="openProductPopup(row)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+              <div class="col-lg-4 col-sm-4 col-xs-4">
+                <button mat-icon-button mat-sm-button color="warn" class="" (click)="deleteProduct(row)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+              <div class="col-lg-4 col-sm-4 col-xs-4">
+                <button mat-icon-button mat-sm-button (click)="downloadCsv(row)">
+                  <mat-icon>file_download</mat-icon>
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="pt-1 pb-1 pl-1">
+            <div class="pagination">{{totalRecords}} Total</div>
+          </td>
+          <td colspan="7">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination" *ngIf="totalPages.length > 1">
+                <li class="page-item" [ngClass]="{'disabled':pageNumber <= 1}">
+                  <a class="page-link" (click)="this.getPageProduct(pageNumber-1);" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                </li>
+                <li class="page-item" *ngFor="let page of totalPages" [ngClass]="{'active':pageNumber === page}">
+                  <a class="page-link" (click)="this.getPageProduct(page);">
+                    {{page}}
+                  </a>
+                </li>
+                <li class="page-item"  [ngClass]="{'disabled':pageNumber >= totalPages.length}">
+                  <a class="page-link" (click)="this.getPageProduct(pageNumber+1);" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+
   </mat-card-content>
 
 </mat-card>
-

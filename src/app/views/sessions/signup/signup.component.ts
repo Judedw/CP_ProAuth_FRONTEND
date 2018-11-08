@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatProgressBar, MatButton } from '@angular/material';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { UserService } from "../UserService.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-signup',
@@ -13,7 +15,10 @@ export class SignupComponent implements OnInit {
   @ViewChild(MatButton) submitButton: MatButton;
 
   signupForm: FormGroup
-  constructor() {}
+  result: boolean = true;
+
+
+  constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit() {
     const password = new FormControl('', Validators.required);
@@ -39,6 +44,12 @@ export class SignupComponent implements OnInit {
 
     this.submitButton.disabled = true;
     this.progressBar.mode = 'indeterminate';
+
+    this.userService.signup(signupData);
+
+
+
+
   }
 
 }

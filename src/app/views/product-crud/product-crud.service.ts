@@ -45,8 +45,8 @@ export class ProductCrudService {
     return this.http.get(this.productApiUrl).pipe(catchError(this.handleError));
   }
 
-  getPageProducts(pageNo): Observable<any> {
-    return this.http.get(this.productApiUrl+"?pageNumber="+pageNo).pipe(catchError(this.handleError));
+  getPageProducts(pageNumber,pageSize): Observable<any> {
+    return this.http.get(this.productApiUrl+"?pageNumber="+pageNumber+"&pageSize="+pageSize).pipe(catchError(this.handleError));
   }
 
   removeProduct(row, items): Observable<any> {

@@ -43,6 +43,25 @@ export class UserService {
     }
   }
 
+  signup(signupFormData) {
+
+    let userToken = {
+      id: this.users.length++,
+      username: signupFormData.email,
+      profilename: "profile_name",
+      password: signupFormData.password,
+      image: "",
+      token: "fake-logged-user",
+      company: "company",
+      position: "position"
+    };
+    console.log("user" + userToken);
+
+    // save data here
+
+    localStorage.setItem("currentUser", JSON.stringify(userToken));
+  }
+
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem("currentUser");

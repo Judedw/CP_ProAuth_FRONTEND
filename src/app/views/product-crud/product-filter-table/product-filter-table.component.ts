@@ -21,11 +21,15 @@ import { Content } from "../../../model/ClientModel.model";
 })
 export class ProductFilterTableComponent implements OnInit, OnDestroy {
   rows: any[];
-  columns = [];
+  columns = ["Product Code", "Product Name", "Description", "Batch Number", "Quantity", "Expire Date", "Actions"];
   temp = [];
 
+  pageNumber = 1;
+  pageSize = 10;
+  totalPages = [];
+  totalRecords = 0;
+
   // pagination
-  pageNo = 1;
 
 
   public getProductsSub: Subscription;
@@ -42,7 +46,7 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.getAllProduct();
+    this.getPageProduct(this.pageNumber);
   }
 
   ngOnDestroy() {
@@ -116,23 +120,43 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
     );
   }
 
-  getPageProduct() {
-    this.getProductsSub = this.prodService.getPageProducts(this.pageNo).subscribe(
-      successResp => {
-        this.rows = this.temp = successResp.content;
-        console.log(this.rows);
-      },
-      error => {
-        this.loader.close();
-        console.log(error);
-        console.log(error.status);
-        this.errDialog.showError({
-          title: "Error",
-          status: error.status,
-          type: "http_error"
-        });
-      }
-    );
+  getPageProduct(pageNumber) {
+    if (pageNumber === 1 || (0 < pageNumber && pageNumber <= this.totalPages.length)) {
+      this.pageNumber = pageNumber;
+
+      this.getProductsSub = this.prodService.getPageProducts(pageNumber, this.pageSize).subscribe(
+        successResp => {
+          this.rows = this.temp = successResp.content;
+          let totalPages = successResp.pagination.totalPages;
+          let totalPagesArray = [];
+
+          if (totalPages > 1) {
+            for (let i = 1; i <= totalPages; i++) {
+              totalPagesArray.push(i);
+            }
+          }
+          this.totalPages = totalPagesArray;
+          this.totalRecords = successResp.pagination.totalRecords;
+
+        },
+        error => {
+          this.loader.close();
+          console.log(error);
+          console.log(error.status);
+          this.errDialog.showError({
+            title: "Error",
+            status: error.status,
+            type: "http_error"
+          });
+        }
+      );
+    }
+  }
+
+  changeValue() {
+    this.pageNumber = 1;
+    this.getPageProduct(this.pageNumber);
+
   }
 
   deleteProduct(row) {
@@ -256,10 +280,8 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
   //     }
   //   );
   // }
-
-
-
 }
+
 
 export class CSVDTO {
   productDetails: any;
