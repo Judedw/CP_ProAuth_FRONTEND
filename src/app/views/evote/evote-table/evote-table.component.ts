@@ -1,3 +1,6 @@
+// -------- JA Sprint 1 - MVP --------
+// --------- Buddhi Hasanka ----------
+
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { EvoteService } from "../evote-service.service";
 import { Subscription } from "../../../../../node_modules/rxjs";
@@ -29,6 +32,12 @@ export class EvoteTableComponent implements OnInit, OnDestroy {
   columns = [];
   temp = [];
 
+  // pagination
+  pageNumber = 1;
+  pageSize = 10;
+  totalPages = [];
+  totalRecords = 0;
+
   public clients: any[];
   public getClientSub: Subscription;
   public response: ResponseModel;
@@ -46,7 +55,8 @@ export class EvoteTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.getAllEvote();
+    // this.getAllEvote();
+    this.getPageEvote(this.pageNumber);
     this.getClientSuggestions();
   }
 
@@ -122,6 +132,7 @@ export class EvoteTableComponent implements OnInit, OnDestroy {
     this.getEvoteSub = this.evoteService.getAllEvotes().subscribe(
       successResp => {
         this.rows = successResp.content;
+        this.totalRecords = successResp.pagination.totalRecords;
       },
       error => {
         this.loader.close();
@@ -133,6 +144,48 @@ export class EvoteTableComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  // --------- BH ----------
+  getPageEvote(pageNumber) {
+    if (pageNumber === 1 || (0 < pageNumber && pageNumber <= this.totalPages.length)) {
+      this.pageNumber = pageNumber;
+
+      this.getEvoteSub = this.evoteService.getPageEvotes(pageNumber, this.pageSize).subscribe(
+        successResp => {
+          this.rows = this.temp = successResp.content;
+          let totalPages = successResp.pagination.totalPages;
+          let totalPagesArray = [];
+
+          if (totalPages > 1) {
+            for (let i = 1; i <= totalPages; i++) {
+              totalPagesArray.push(i);
+            }
+          }
+          this.totalPages = totalPagesArray;
+          this.totalRecords = successResp.pagination.totalRecords;
+
+        },
+        error => {
+          this.loader.close();
+          console.log(error);
+          console.log(error.status);
+          this.errDialog.showError({
+            title: "Error",
+            status: error.status,
+            type: "http_error"
+          });
+        }
+      );
+    }
+  }
+
+  changeValue() {
+    this.pageNumber = 1;
+    this.getPageEvote(this.pageNumber);
+  }
+  // --------- BH ----------
+
+
   deleteEvote(row) {
     this.confirmService
       .confirm({ message: `Delete ${row.description}?` })

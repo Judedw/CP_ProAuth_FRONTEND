@@ -1,3 +1,6 @@
+// -------- JA Sprint 1 - MVP --------
+// --------- Buddhi Hasanka ----------
+
 import { Injectable } from "@angular/core";
 
 import {
@@ -45,9 +48,11 @@ export class ProductCrudService {
     return this.http.get(this.productApiUrl).pipe(catchError(this.handleError));
   }
 
+  // --------- BH ----------
   getPageProducts(pageNumber,pageSize): Observable<any> {
     return this.http.get(this.productApiUrl+"?pageNumber="+pageNumber+"&pageSize="+pageSize).pipe(catchError(this.handleError));
   }
+  // --------- BH ----------
 
   removeProduct(row, items): Observable<any> {
     return this.http

@@ -1,3 +1,6 @@
+// -------- JA Sprint 1 - MVP --------
+// --------- Buddhi Hasanka ----------
+
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { egretAnimations } from "../../../shared/animations/egret-animations";
 import { SurveyCreationPopupComponent } from "../survey-creation-popup/survey-creation-popup.component";
@@ -21,6 +24,12 @@ export class SurveyTableComponent implements OnInit, OnDestroy {
   getSurveysSub: Subscription;
   typeMap: Map<string, string>;
 
+  // pagination
+  pageNumber = 1;
+  pageSize = 10;
+  totalPages = [];
+  totalRecords = 0;
+
   constructor(
     private dialog: MatDialog,
     private router: Router,
@@ -28,10 +37,11 @@ export class SurveyTableComponent implements OnInit, OnDestroy {
     private loader: AppLoaderService,
     private errDialog: AppErrorService,
     private confirmService: AppConfirmService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.getAllSurvey();
+    // this.getAllSurvey();
+    this.getPageSurvey(this.pageNumber);
   }
 
   ngOnDestroy() {
@@ -136,6 +146,7 @@ export class SurveyTableComponent implements OnInit, OnDestroy {
     this.getSurveysSub = this.surveyService.getAllSurveys().subscribe(
       successResp => {
         this.rows = successResp.content;
+        this.totalRecords = successResp.pagination.totalRecords;
       },
       error => {
         this.loader.close();
@@ -147,6 +158,46 @@ export class SurveyTableComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  // --------- BH ----------
+  getPageSurvey(pageNumber) {
+    if (pageNumber === 1 || (0 < pageNumber && pageNumber <= this.totalPages.length)) {
+      this.pageNumber = pageNumber;
+
+      this.getSurveysSub = this.surveyService.getPageSurveys(pageNumber, this.pageSize).subscribe(
+        successResp => {
+          this.rows = successResp.content;
+          let totalPages = successResp.pagination.totalPages;
+          let totalPagesArray = [];
+
+          if (totalPages > 1) {
+            for (let i = 1; i <= totalPages; i++) {
+              totalPagesArray.push(i);
+            }
+          }
+          this.totalPages = totalPagesArray;
+          this.totalRecords = successResp.pagination.totalRecords;
+
+        },
+        error => {
+          this.loader.close();
+          console.log(error);
+          console.log(error.status);
+          this.errDialog.showError({
+            title: "Error",
+            status: error.status,
+            type: "http_error"
+          });
+        }
+      );
+    }
+  }
+
+  changeValue() {
+    this.pageNumber = 1;
+    this.getPageSurvey(this.pageNumber);
+  }
+  // --------- BH ----------
 
   navigateSurveyBuilder(res: any) {
     console.log("navigation method : ");

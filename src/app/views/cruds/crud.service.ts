@@ -1,3 +1,6 @@
+// -------- JA Sprint 1 - MVP --------
+// --------- Buddhi Hasanka ----------
+
 import { Injectable } from "@angular/core";
 import { UserDB } from "../../shared/fake-db/users";
 import { Observable, throwError } from "rxjs";
@@ -13,7 +16,7 @@ import { Clients, Content } from "../../model/ClientModel.model";
 
 @Injectable()
 export class CrudService {
-  clientApiUrl: string = environment.productApiURL + "clients/";
+  clientApiUrl: string = environment.productApiURL + "clients";
   httpOptions = {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
@@ -26,9 +29,15 @@ export class CrudService {
     return this.http.get(this.clientApiUrl).pipe(catchError(this.handleError));
   }
 
+  // --------- BH ----------
+  getPageItems(pageNumber,pageSize): Observable<any> {
+    return this.http.get(this.clientApiUrl+"?pageNumber="+pageNumber+"&pageSize="+pageSize).pipe(catchError(this.handleError));
+  }
+  // --------- BH ----------
+
   getClientSuggestions(): Observable<any> {
     return this.http
-      .get<string>(this.clientApiUrl + "suggestions")
+      .get<string>(this.clientApiUrl + "/suggestions")
       .pipe(catchError(this.handleError));
   }
 

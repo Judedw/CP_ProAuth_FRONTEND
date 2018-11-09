@@ -1,3 +1,6 @@
+// -------- JA Sprint 1 - MVP --------
+// --------- Buddhi Hasanka ----------
+
 import { Injectable } from "@angular/core";
 import {
   HttpClient,
@@ -31,6 +34,12 @@ export class EvoteService {
   getAllEvotes(): Observable<any> {
     return this.http.get(this.surveyApiUrl).pipe(catchError(this.handleError));
   }
+
+  // --------- BH ----------
+  getPageEvotes(pageNumber,pageSize): Observable<any> {
+    return this.http.get(this.surveyApiUrl+"?pageNumber="+pageNumber+"&pageSize="+pageSize).pipe(catchError(this.handleError));
+  }
+  // --------- BH ----------
 
   removeEvotes(row, items): Observable<any> {
     return this.http.delete(this.surveyApiUrl + row.id).pipe(

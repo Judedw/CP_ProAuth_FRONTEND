@@ -1,3 +1,6 @@
+// -------- JA Sprint 1 - MVP --------
+// --------- Buddhi Hasanka ----------
+
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CrudService } from "../crud.service";
 import { MatDialogRef, MatDialog, MatSnackBar } from "@angular/material";
@@ -15,7 +18,14 @@ import { AppErrorService } from "../../../shared/services/app-error/app-error.se
   animations: egretAnimations
 })
 export class CrudNgxTableComponent implements OnInit, OnDestroy {
+
   public items: any[];
+
+  // pagination
+  pageNumber = 1;
+  pageSize = 10;
+  totalPages = [];
+  totalRecords = 0;
 
   public getItemSub: Subscription;
   constructor(
@@ -25,10 +35,11 @@ export class CrudNgxTableComponent implements OnInit, OnDestroy {
     private confirmService: AppConfirmService,
     private loader: AppLoaderService,
     private errDialog: AppErrorService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.getItems();
+    // this.getItems();
+    this.getPageItems(this.pageNumber);
   }
   ngOnDestroy() {
     if (this.getItemSub) {
@@ -49,6 +60,46 @@ export class CrudNgxTableComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  // --------- BH ----------
+  getPageItems(pageNumber) {
+    if (pageNumber === 1 || (0 < pageNumber && pageNumber <= this.totalPages.length)) {
+      this.pageNumber = pageNumber;
+
+      this.getItemSub = this.crudService.getPageItems(pageNumber, this.pageSize).subscribe(
+        successResp => {
+          this.items = successResp.content;
+          let totalPages = successResp.pagination.totalPages;
+          let totalPagesArray = [];
+
+          if (totalPages > 1) {
+            for (let i = 1; i <= totalPages; i++) {
+              totalPagesArray.push(i);
+            }
+          }
+          this.totalPages = totalPagesArray;
+          this.totalRecords = successResp.pagination.totalRecords;
+
+        },
+        error => {
+          this.loader.close();
+          console.log(error);
+          console.log(error.status);
+          this.errDialog.showError({
+            title: "Error",
+            status: error.status,
+            type: "http_error"
+          });
+        }
+      );
+    }
+  }
+
+  changeValue() {
+    this.pageNumber = 1;
+    this.getPageItems(this.pageNumber);
+  }
+  // --------- BH ----------
 
   openPopUp(data: any = {}, isNew?) {
     let title = isNew ? "Add new client" : "Update client";

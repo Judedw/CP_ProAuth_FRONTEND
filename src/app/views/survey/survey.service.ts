@@ -1,3 +1,6 @@
+// -------- JA Sprint 1 - MVP --------
+// --------- Buddhi Hasanka ----------
+
 import { Injectable } from "@angular/core";
 import {
   HttpClient,
@@ -103,6 +106,14 @@ export class SurveyService {
       .get(this.surveyApiUrl + "surveys")
       .pipe(catchError(this.handleError));
   }
+
+  // --------- BH ----------
+  getPageSurveys(pageNumber,pageSize): Observable<any> {
+    return this.http
+      .get(this.surveyApiUrl + "surveys?pageNumber="+pageNumber+"&pageSize="+pageSize)
+      .pipe(catchError(this.handleError));
+  }
+  // --------- BH ----------
 
   removeSurvey(row, items): Observable<any> {
     return this.http.delete(this.surveyApiUrl + "surveys/" + row.id).pipe(

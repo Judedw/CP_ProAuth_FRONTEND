@@ -1,41 +1,111 @@
+<!-- -------- JA Sprint 1 - MVP -------- -->
+<!-- --------- Buddhi Hasanka ---------- -->
+
+
 <div class="m-333">
   <!-- <span fxFlex></span> -->
   <button mat-raised-button class="mb-05" color="primary" (click)="openPopUp({}, true)">Add Client</button>
 </div>
 <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
   <mat-card-content class="p-0">
-    <ngx-datatable
-          class="material ml-0 mr-0"
-          [rows]="items"
-          [columnMode]="'flex'"
-          [headerHeight]="50"
-          [footerHeight]="50"
-          [limit]="10"
-          [rowHeight]="'auto'">
-          <ngx-datatable-column name="Client Code" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row?.code }}
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Name" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row?.name }}
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column name="Contacts" [flexGrow]="2">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row?.description }}
-            </ng-template>
-          </ngx-datatable-column>
 
 
-          <ngx-datatable-column name="Actions" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <button mat-icon-button mat-sm-button color="primary" class="mr-1" (click)="openPopUp(row)"><mat-icon>edit</mat-icon></button>
-              <button mat-icon-button mat-sm-button color="warn" (click)="deleteItem(row)"><mat-icon>delete</mat-icon></button>
-            </ng-template>
-          </ngx-datatable-column>
-        </ngx-datatable>
+    <!-- <ngx-datatable class="material ml-0 mr-0" [rows]="items" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50"
+      [limit]="10" [rowHeight]="'auto'">
+      <ngx-datatable-column name="Client Code" [flexGrow]="1">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.code }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Name" [flexGrow]="1">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.name }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="Contacts" [flexGrow]="2">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.description }}
+        </ng-template>
+      </ngx-datatable-column>
+
+
+      <ngx-datatable-column name="Actions" [flexGrow]="1">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <button mat-icon-button mat-sm-button color="primary" class="mr-1" (click)="openPopUp(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button mat-sm-button color="warn" (click)="deleteItem(row)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable> -->
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="pl-1">Client Code</th>
+          <th>Name</th>
+          <th>Contacts</th>
+          <th width="150px" class="">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of items;">
+          <td class="pt-1 pb-1 pl-1">{{row?.code}}</td>
+          <td class="pt-1 pb-1">{{ row?.name }}</td>
+          <td class="pt-1 pb-1">{{ row?.description }}</td>
+          <td class="pt-1 pb-1 pr-1">
+            <div class="pb-1">
+              <div class="col-lg-4 col-sm-4 col-xs-4">
+                <button mat-icon-button mat-sm-button color="primary" class="mr-1" (click)="openPopUp(row)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+              <div class="col-lg-4 col-sm-4 col-xs-4">
+                <button mat-icon-button mat-sm-button color="warn" (click)="deleteItem(row)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="pt-1 pb-1 pl-1">
+            <div class="pagination">{{totalRecords}} Total</div>
+          </td>
+          <td colspan="3">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination" *ngIf="totalPages.length > 1">
+                <li class="page-item" [ngClass]="{'disabled':pageNumber <= 1}">
+                  <a class="page-link" (click)="this.getPageItems(pageNumber-1);" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                </li>
+                <li class="page-item" *ngFor="let page of totalPages" [ngClass]="{'active':pageNumber === page}">
+                  <a class="page-link" (click)="this.getPageItems(page);">
+                    {{page}}
+                  </a>
+                </li>
+                <li class="page-item" [ngClass]="{'disabled':pageNumber >= totalPages.length}">
+                  <a class="page-link" (click)="this.getPageItems(pageNumber+1);" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </li>s
+              </ul>
+            </nav>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+
+
+
+
   </mat-card-content>
 </mat-card>

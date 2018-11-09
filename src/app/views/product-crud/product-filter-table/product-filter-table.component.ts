@@ -1,3 +1,6 @@
+// -------- JA Sprint 1 - MVP --------
+// --------- Buddhi Hasanka ----------
+
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ProductCrudService } from "../product-crud.service";
 import { MatDialogRef, MatDialog, DateAdapter } from "@angular/material";
@@ -21,15 +24,14 @@ import { Content } from "../../../model/ClientModel.model";
 })
 export class ProductFilterTableComponent implements OnInit, OnDestroy {
   rows: any[];
-  columns = ["Product Code", "Product Name", "Description", "Batch Number", "Quantity", "Expire Date", "Actions"];
   temp = [];
 
+  // pagination
   pageNumber = 1;
   pageSize = 10;
   totalPages = [];
   totalRecords = 0;
 
-  // pagination
 
 
   public getProductsSub: Subscription;
@@ -120,6 +122,7 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
     );
   }
 
+  // --------- BH ----------
   getPageProduct(pageNumber) {
     if (pageNumber === 1 || (0 < pageNumber && pageNumber <= this.totalPages.length)) {
       this.pageNumber = pageNumber;
@@ -156,8 +159,8 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
   changeValue() {
     this.pageNumber = 1;
     this.getPageProduct(this.pageNumber);
-
   }
+  // --------- BH ----------
 
   deleteProduct(row) {
     this.confirmService

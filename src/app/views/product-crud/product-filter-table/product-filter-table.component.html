@@ -1,9 +1,12 @@
+<!-- -------- JA Sprint 1 - MVP -------- -->
+<!-- --------- Buddhi Hasanka ---------- -->
+
+
 <mat-form-field class="margin-333" style="width: 99%">
   <input matInput placeholder="Type to filter all columns" value="" (keyup)='updateFilter($event)'>
 </mat-form-field>
 
 <div class="m-333">
-  <!-- <span fxFlex></span> -->
   <button mat-raised-button class="mb-05" color="primary" (click)="openProductPopup({}, true)">Add Product</button>
   <span fxFlex></span>
   <p class="mat-select-lable"> Page Size: </p>
@@ -71,29 +74,9 @@
     </ngx-datatable> -->
 
 
-    <!-- <table class="table table-hover">
-      <thead>
-        <th class="th-sm" *ngFor="let column of columns;"> {{column}}
-          <i class="fa fa-sort float-right" aria-hidden="true"></i>
-        </th>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Tiger Nixon</td>
-          <td>System Architect</td>
-          <td>Edinburgh</td>
-          <td>61</td>
-          <td>2011/04/25</td>
-          <td>$320,800</td>
-          <td>$320,800</td>
-        </tr>
-      </tbody>
-    </table> -->
-
     <table class="table table-hover">
       <thead>
         <tr>
-          <!-- <th scope="col" *ngFor="let column of columns;">{{column}}</th> -->
           <th class="pl-1">Product Code</th>
           <th>Product Name</th>
           <th width="250px">Description</th>
