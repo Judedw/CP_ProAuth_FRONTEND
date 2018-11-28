@@ -2,9 +2,6 @@
   <mat-toolbar matDialogTitle class="mat-primary m-0">
     <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
       <span class="title dialog-title">{{data.title}}</span>
-      <!-- <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
-        <mat-icon>close</mat-icon>
-      </button> -->
     </div>
   </mat-toolbar>
   <mat-dialog-content class="mat-typography">
@@ -63,13 +60,6 @@
           </div>
 
           <div fxFlex="25" class="pr-1">
-            <!-- <mat-button-toggle (click)='addAnsTemplate()' value="add">
-              <mat-icon>add</mat-icon>
-            </mat-button-toggle>
-            <mat-button-toggle *ngIf="ansTemplateForm.controls['answers'].controls.length > 1" (click)=removeAnsTemplate(i)
-              value="remove">
-              <mat-icon>remove</mat-icon>
-            </mat-button-toggle> -->
             <button mat-mini-fab color="default" class="ml-1" (click)='addAnsTemplate()' value="add" type="button">
               <mat-icon>add</mat-icon>
             </button>

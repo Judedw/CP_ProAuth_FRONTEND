@@ -12,6 +12,7 @@ export class AnswerTemplatePopupComponent implements OnInit {
   public ansTemplateForm: FormGroup;
   selectedAnsType: string;
   ansTemplateArray: FormArray;
+  selectedFileList = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -33,6 +34,17 @@ export class AnswerTemplatePopupComponent implements OnInit {
     });
     this.patch(fieldItem.answers);
   }
+
+
+testAnswerGroup(){
+  return this.fb.group({
+    lable: [],
+    value: [],
+    optionNumber: []
+  });
+}
+
+
 
   patch(fields?) {
     const control = <FormArray>this.ansTemplateForm.controls["answers"];
@@ -89,3 +101,9 @@ export class AnswerTemplatePopupComponent implements OnInit {
     }
   ];
 }
+
+
+
+
+
+

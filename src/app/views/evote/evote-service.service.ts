@@ -55,6 +55,7 @@ export class EvoteService {
   }
 
   addEvote(evoteObj, items): Observable<any> {
+
     return this.http.post<any>(this.surveyApiUrl, evoteObj).pipe(
       map(data => {
         items.unshift(data.content);

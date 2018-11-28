@@ -16,7 +16,7 @@ import { Clients, Content } from "../../model/ClientModel.model";
 
 @Injectable()
 export class CrudService {
-  clientApiUrl: string = environment.productApiURL + "clients";
+  clientApiUrl: string = environment.productApiURL + "clients/";
   httpOptions = {
     headers: new HttpHeaders({
       "Content-Type": "application/json"
@@ -37,7 +37,7 @@ export class CrudService {
 
   getClientSuggestions(): Observable<any> {
     return this.http
-      .get<string>(this.clientApiUrl + "/suggestions")
+      .get<string>(this.clientApiUrl + "suggestions")
       .pipe(catchError(this.handleError));
   }
 

@@ -101,6 +101,8 @@ export class CrudNgxTableComponent implements OnInit, OnDestroy {
   }
   // --------- BH ----------
 
+  
+
   openPopUp(data: any = {}, isNew?) {
     let title = isNew ? "Add new client" : "Update client";
     let dialogRef: MatDialogRef<any> = this.dialog.open(

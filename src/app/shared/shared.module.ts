@@ -54,6 +54,8 @@ import { EgretSideNavToggleDirective } from "./directives/egret-side-nav-toggle.
 import { PositiveNumberOnly } from "../directives/PositiveNumber.directive";
 import { PositiveNumberAndLetterOnly } from "../directives/PositiveNumberAndLetter.directive";
 import { LetterOnly } from "../directives/Letter.directive";
+import { PasswordValidator } from "../directives/Password.directive";
+import { EmailValidator } from "../directives/Email.directive";
 
 // PIPES
 import { RelativeTimePipe } from "./pipes/relative-time.pipe";
@@ -105,6 +107,8 @@ const classesToInclude = [
   PositiveNumberOnly,
   PositiveNumberAndLetterOnly,
   LetterOnly,
+  EmailValidator,
+  PasswordValidator,
 ];
 
 @NgModule({
@@ -149,4 +153,4 @@ const classesToInclude = [
   declarations: classesToInclude,
   exports: classesToInclude
 })
-export class SharedModule {}
+export class SharedModule { }

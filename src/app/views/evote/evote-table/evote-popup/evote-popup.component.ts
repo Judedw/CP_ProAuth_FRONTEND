@@ -95,8 +95,6 @@ export class EvotePopupComponent implements OnInit {
       });
 
       this.currentTotalImageCount = this.remainImagesID.length;
-
-      this.printTest();
     }
 
     this.getAllSurvey();
@@ -171,24 +169,9 @@ export class EvotePopupComponent implements OnInit {
         );
       }
 
-      this.printTest();
     }
   }
 
-  // --------- For Testing -----------------
-
-  printTest() {
-    console.log("--------------- start ------------------");
-    console.log("UPDATE URLS ...............................");
-    console.log(this.urls);
-    console.log("REMAIN IMAGE ID ARRAY ....................................");
-    console.log(this.remainImagesID);
-    console.log("TOTAL IMAGE COUNT ....................................");
-    console.log(this.currentTotalImageCount);
-    console.log("NEWLY SELECTED FILE ARRAY  ....................................");
-    console.log(this.newlySelectedFileList);
-    console.log("--------------- end ------------------");
-  }
 
   removeSelectedImg(index: number) {
     console.log("remove -- " + index);
@@ -202,7 +185,6 @@ export class EvotePopupComponent implements OnInit {
     } else {
       this.remainImagesID.splice(index,1);
     }
-    this.printTest();
   }
 
 

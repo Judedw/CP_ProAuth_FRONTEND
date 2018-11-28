@@ -21,11 +21,14 @@ export class SigninComponent implements OnInit {
   signInUrl: string = "sessions/signin";
   result: boolean = true;
 
-  constructor(private userService: UserService, private router: Router) {}
+
+  constructor(
+    private userService: UserService,
+    private router: Router) { }
 
   ngOnInit() {
     this.signinForm = new FormGroup({
-      username: new FormControl("", Validators.required),
+      email: new FormControl("", Validators.required),
       password: new FormControl("", Validators.required),
       rememberMe: new FormControl(false)
     });
@@ -33,8 +36,8 @@ export class SigninComponent implements OnInit {
 
   signin() {
     const signinData = this.signinForm.value;
+    
     console.log(signinData);
-
     console.log("LOCAL STORAGE");
     console.log(localStorage.getItem("currentUser"));
 
@@ -51,4 +54,5 @@ export class SigninComponent implements OnInit {
       this.router.navigate([this.signInUrl]);
     }
   }
+
 }

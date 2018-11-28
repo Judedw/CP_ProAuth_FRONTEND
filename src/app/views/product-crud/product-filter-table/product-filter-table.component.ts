@@ -48,6 +48,7 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    // this.getAllProduct();
     this.getPageProduct(this.pageNumber);
   }
 
@@ -223,6 +224,7 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
             });
 
             this.loader.close();
+            this.getPageProduct(this.pageNumber);
           },
           error => {
             this.loader.close();
@@ -250,6 +252,7 @@ export class ProductFilterTableComponent implements OnInit, OnDestroy {
               });
 
             this.loader.close();
+            this.getPageProduct(this.pageNumber);
             return this.rows.slice();
           },
           error => {

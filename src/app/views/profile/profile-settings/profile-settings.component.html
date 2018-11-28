@@ -2,122 +2,180 @@
   <mat-tab-group>
     <mat-tab label="Account Settings">
       <mat-card-content class="mt-1">
-          <form>
-            <mat-form-field class="full-width">
-              <input
-              matInput
-              name="name"
-              placeholder="Name"
-              value="">
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <input
-                matInput
-                name="title"
-                placeholder="Title"
-                value="">
+        <form [formGroup]="accountSettingForm" (ngSubmit)="updateUser()">
+          <mat-form-field class="full-width">
+            <input matInput name="name" placeholder="Name" [formControl]="accountSettingForm.controls['name']"
+              positiveNumberAndLetterOnly>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput name="email" placeholder="Email" [formControl]="accountSettingForm.controls['email']" type="email">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <textarea matInput name="description" placeholder="Description" [formControl]="accountSettingForm.controls['description']"></textarea>
+          </mat-form-field>
+
+          <mat-tab-group (selectedTabChange)="tabChanged($event)">
+            <mat-tab label="Tab 1">
+
+              <mat-form-field class="full-width mt-1">
+                <input ngx-google-places-autocomplete [options]='options' matInput #placesRef="ngx-places" (change)="handleAddressChange($event)"
+                  name="address" placeholder="Address" [formControl]="accountSettingForm.controls['address']">
               </mat-form-field>
-            <mat-form-field class="full-width">
-              <input
-              matInput
-              name="email"
-              placeholder="Email"
-              value="">
-            </mat-form-field>
-            <mat-form-field class="full-width">
-              <input
-              matInput
-              name="phone"
-              placeholder="Phone"
-              value="">
-            </mat-form-field>
-            <mat-form-field class="full-width">
-              <input
-              matInput
-              name="address"
-              placeholder="Adresss"
-              value="">
-            </mat-form-field>
-            <mat-form-field class="full-width">
-              <input
-              matInput
-              name="website"
-              placeholder="Website"
-              value="">
-            </mat-form-field>
-            <button mat-raised-button color="primary">Save</button>
-          </form>
+
+
+            </mat-tab>
+            <mat-tab label="Tab 2">
+              <mat-form-field class="full-width mt-1">
+                <input matInput name="address_line1" placeholder="Address Line 1" [formControl]="accountSettingForm.controls['address_line1']"
+                  positiveNumberAndLetterOnly>
+              </mat-form-field>
+              <mat-form-field class="full-width">
+                <input matInput name="address_line2" placeholder="Address Line 2" [formControl]="accountSettingForm.controls['address_line2']"
+                  positiveNumberAndLetterOnly>
+              </mat-form-field>
+              <mat-form-field class="full-width">
+                <input matInput name="city" placeholder="City" [formControl]="accountSettingForm.controls['city']"
+                  letterOnly type="text">
+              </mat-form-field>
+              <mat-form-field class="full-width">
+                <input matInput name="postal_code" placeholder="Postal Code" [formControl]="accountSettingForm.controls['postal_code']"
+                  positiveNumberAndLetterOnly type="text">
+              </mat-form-field>
+              <!-- (selectionChange)="selectedCountry=$event.value" -->
+              <mat-form-field class="full-width">
+                <mat-select [formControl]="accountSettingForm.controls['country']" [(value)]="selectedCountry"
+                  placeholder="Select A Country">
+                  <mat-option *ngFor="let country of countries; let i = index" [value]="i">{{country.country}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+
+
+              <mat-form-field class="full-width">
+                <mat-select [formControl]="accountSettingForm.controls['state']" placeholder="Select A State" [(value)]="selectedState">
+                  <mat-option *ngFor="let state of countries[selectedCountry].states; let i = index" [value]="i">{{state}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+
+
+
+
+            </mat-tab>
+          </mat-tab-group>
+
+          <button mat-raised-button color="primary" [disabled]="accountSettingForm.invalid">Save</button>
+        </form>
+      </mat-card-content>
+    </mat-tab>
+    <mat-tab label="Change Password">
+      <mat-card-content class="mt-1">
+        <form [formGroup]="passwordSettingForm" (ngSubmit)="updatePassword()">
+          <mat-form-field class="full-width">
+            <input matInput name="current_password" placeholder="Current Password" [formControl]="passwordSettingForm.controls['current_password']" type="password">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput name="new_password" placeholder="New Password" [formControl]="passwordSettingForm.controls['new_password']" type="password">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput name="confirm_password" placeholder="Confirm Password" [formControl]="passwordSettingForm.controls['confirm_password']" type="password">
+          </mat-form-field>
+          <button mat-raised-button color="primary" [disabled]="passwordSettingForm.invalid">Save</button>
+        </form>
       </mat-card-content>
     </mat-tab>
     <mat-tab label="Profile Picture">
       <mat-card-content>
         <div class="mb-1 mt-1">
           <p>Upload a profile picture</p>
-          <input type="file" ng2FileSelect [uploader]="uploader" />
         </div>
 
-        <div class="mb-1">
-          <div ng2FileDrop
-          [ngClass]="{'dz-file-over': hasBaseDropZoneOver}"
-          [uploader]="uploader"
-          (fileOver)="fileOverBase($event)"
-          class="fileupload-drop-zone">
-          Drop png/jpeg file here
+
+        <!-- --------- New Code ----------------- -->
+
+        <!-- --------- hidden file input --------- -->
+        <input (change)="onSelectFile($event)" #productImgs type="file" multiple style="display: none" />
+
+
+        <!-- --------- file input click button --------- -->
+        <!-- *ngIf="data.isNew"  -->
+        <div layout-margin layout-padding>
+          <button mat-raised-button class="mr-1" (click)="productImgs.click()" type="button">
+            Browse Images
+            <!-- <span *ngIf="this.maxUploadableFileCount === null || this.maxUploadableFileCount < 1 ?
+          (false) :
+          (this.currentTotalImageCount > 0)">
+              ({{this.currentTotalImageCount}} / 4)</span> -->
+          </button>
+        </div>
+
+        <!-- --------- start images preview container --------- -->
+        <div id="cp_image_preview_container" fxLayout="row" fxLayoutWrap="wrap" layout-align="center">
+
+          <!-- --------- start card --------- -->
+          <div [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}" *ngFor='let url of urls; let i = index' fxFlex="100"
+            fxFlex.gt-sm="25" fxFlex.sm="50" style="display: flex;">
+            <mat-card class="p-0">
+              <button type="button" class="close" aria-label="Close" (click)="removeSelectedImg(i)">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <!-- <img [src]="url"> -->
+            </mat-card>
+          </div>
+          <!-- --------- end card --------- -->
+
+        </div>
+        <!-- --------- end images preview container --------- -->
+
+
+
+
+
+        <!-- <div class="mb-1">
+          <div ng2FileDrop [ngClass]="{'dz-file-over': hasBaseDropZoneOver}" [uploader]="uploader" (fileOver)="fileOverBase($event)"
+            class="fileupload-drop-zone">
+            Drop png/jpeg file here
           </div>
         </div>
         <table class="default-table mat-box-shadow" style="width: 100%">
           <thead>
             <tr>
-                <th width="30%">Name</th>
-                <th>Size</th>
-                <th>Progress</th>
-                <th>Status</th>
-                <th>Actions</th>
+              <th width="30%">Name</th>
+              <th>Size</th>
+              <th>Progress</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
-            </thead>
-            <tbody *ngIf="uploader.queue.length; else tableNoData">
+          </thead>
+          <tbody *ngIf="uploader.queue.length; else tableNoData">
             <tr *ngFor="let item of uploader.queue">
-                <td>{{ item?.file?.name }}</td>
-                <td nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-                <td>
-                    <div class="progress" style="margin-bottom: 0;">
-                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-                        <mat-progress-bar
-                          class=""
-                          color="primary"
-                          mode="determinate"
-                          [value]="item.progress">
-                        </mat-progress-bar>
-                    </div>
-                </td>
-                <td class="">
-                    <mat-icon *ngIf="item.isSuccess">check</mat-icon>
-                    <mat-icon *ngIf="item.isCancel" color="accent">cancel</mat-icon>
-                    <mat-icon *ngIf="item.isError" color="warn">error</mat-icon>
-                </td>
-                <td nowrap>
-                    <button 
-                    mat-raised-button
-                    class="mat-primary"
-                    (click)="item.upload()"
-                    [disabled]="item.isReady || item.isUploading || item.isSuccess">Upload</button>
-                    <button 
-                    mat-raised-button
-                    class="mat-accent"
-                    (click)="item.cancel()"
-                    [disabled]="!item.isUploading">Cancel</button>
+              <td>{{ item?.file?.name }}</td>
+              <td nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+              <td>
+                <div class="progress" style="margin-bottom: 0;">
+                  <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                  <mat-progress-bar class="" color="primary" mode="determinate" [value]="item.progress">
+                  </mat-progress-bar>
+                </div>
+              </td>
+              <td class="">
+                <mat-icon *ngIf="item.isSuccess">check</mat-icon>
+                <mat-icon *ngIf="item.isCancel" color="accent">cancel</mat-icon>
+                <mat-icon *ngIf="item.isError" color="warn">error</mat-icon>
+              </td>
+              <td nowrap>
+                <button mat-raised-button class="mat-primary" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">Upload</button>
+                <button mat-raised-button class="mat-accent" (click)="item.cancel()" [disabled]="!item.isUploading">Cancel</button>
 
-                    <button 
-                    mat-raised-button
-                    class="mat-warn"
-                    (click)="item.remove()">Remove</button>
-                </td>
+                <button mat-raised-button class="mat-warn" (click)="item.remove()">Remove</button>
+              </td>
             </tr>
-            </tbody>
-            <ng-template #tableNoData>
-              <p [ngStyle]="{padding: '0 1.2rem'}">Queue is empty</p>
-            </ng-template>
-        </table>
+          </tbody>
+          <ng-template #tableNoData>
+            <p [ngStyle]="{padding: '0 1.2rem'}">Queue is empty</p>
+          </ng-template>
+        </table> -->
       </mat-card-content>
     </mat-tab>
     <mat-tab label="Privacy Settings">
@@ -132,16 +190,23 @@
           <mat-checkbox> Get email when someone follows you.</mat-checkbox>
         </div>
         <div class="mb-1">
-            <p>Choose your admin panel color schemes.</p>
-            <mat-radio-group fxLayout="column" fxLayoutGap="4px">
-              <mat-radio-button value="indigo">Indigo</mat-radio-button>
-              <mat-radio-button value="blue">Blue</mat-radio-button>
-              <mat-radio-button value="pink">Pink</mat-radio-button>
-              <mat-radio-button value="purple">Purple</mat-radio-button>
-            </mat-radio-group>
+          <p>Choose your admin panel color schemes.</p>
+          <mat-radio-group fxLayout="column" fxLayoutGap="4px">
+            <mat-radio-button value="indigo">Indigo</mat-radio-button>
+            <mat-radio-button value="blue">Blue</mat-radio-button>
+            <mat-radio-button value="pink">Pink</mat-radio-button>
+            <mat-radio-button value="purple">Purple</mat-radio-button>
+          </mat-radio-group>
         </div>
         <button mat-raised-button color="primary">Save</button>
       </mat-card-content>
     </mat-tab>
   </mat-tab-group>
 </mat-card>
+
+<!-- <script>
+  function searchPlace(){
+    var input = document.getElementById('myAddrss');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+  }
+</script> -->

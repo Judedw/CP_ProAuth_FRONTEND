@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { 
   MatListModule,
   MatIconModule,
@@ -15,7 +15,8 @@ import {
   MatRadioModule,
   MatTabsModule,
   MatInputModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatSelectModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -28,6 +29,9 @@ import { ProfileOverviewComponent } from './profile-overview/profile-overview.co
 import { ProfileSettingsComponent } from './profile-settings/profile-settings.component';
 import { ProfileBlankComponent } from './profile-blank/profile-blank.component';
 import { ProfileRoutes } from "./profile.routing";
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+// import { AgmCoreModule } from "@agm/core";
+
 
 @NgModule({
   imports: [
@@ -38,6 +42,7 @@ import { ProfileRoutes } from "./profile.routing";
     MatButtonModule,
     MatCardModule,
     MatMenuModule,
+    MatSelectModule,
     MatSlideToggleModule,
     MatGridListModule,
     MatChipsModule,
@@ -51,6 +56,8 @@ import { ProfileRoutes } from "./profile.routing";
     ChartsModule,
     FileUploadModule,
     SharedModule,
+    ReactiveFormsModule,
+    GooglePlaceModule,
     RouterModule.forChild(ProfileRoutes)
   ],
   declarations: [ProfileComponent, ProfileOverviewComponent, ProfileSettingsComponent, ProfileBlankComponent]

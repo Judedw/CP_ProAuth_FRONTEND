@@ -14,7 +14,7 @@ import { throwError, Observable } from "rxjs";
 
 @Injectable()
 export class ProductCrudService {
-  productApiUrl: string = environment.productApiURL + "products";
+  productApiUrl: string = environment.productApiURL + "products/";
   recentProduct: any;
   httpOptions = {
     headers: new HttpHeaders({

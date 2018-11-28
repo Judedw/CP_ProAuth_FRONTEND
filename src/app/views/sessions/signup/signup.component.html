@@ -7,64 +7,59 @@
           <img src="assets/images/signup/logo.jpg" alt="" class="mb-05">
           <p class="text-muted m-0">Sign up to use our service</p>
         </div>
-        <form [formGroup]="signupForm"  (ngSubmit)="signup()">
+        <form [formGroup]="signupForm" (ngSubmit)="signup()">
           <div class="">
             <mat-form-field class="full-width">
-              <input
-                matInput
-                type="email"
-                name="email"
-                [formControl]="signupForm.controls['email']"
-                placeholder="Your Email"
+              <input matInput type="name" name="name" [formControl]="signupForm.controls['name']" placeholder="Company Name"
+                positiveNumberAndLetterOnly value="">
+            </mat-form-field>
+            <small *ngIf="signupForm.controls['name'].hasError('required') && signupForm.controls['name'].touched"
+              class="form-error-msg"> Company Name is required </small>
+
+            <small *ngIf="signupForm.controls['email'].hasError('email') && signupForm.controls['email'].touched" class="form-error-msg">
+              Invaild email address </small>
+          </div>
+          <div class="">
+            <mat-form-field class="full-width">
+              <input matInput type="email" name="text" [formControl]="signupForm.controls['email']" placeholder="Your Email"
                 value="">
             </mat-form-field>
-            <small 
-              *ngIf="signupForm.controls['email'].hasError('required') && signupForm.controls['email'].touched" 
+            <small *ngIf="signupForm.controls['email'].hasError('required') && signupForm.controls['email'].touched"
               class="form-error-msg"> Email is required </small>
 
-              <small 
-                *ngIf="signupForm.controls['email'].hasError('email') && signupForm.controls['email'].touched" 
-                class="form-error-msg"> Invaild email address </small>
+            <small *ngIf="signupForm.controls['email'].hasError('email') && signupForm.controls['email'].touched" class="form-error-msg">
+              Invaild email address </small>
           </div>
 
           <div class="">
             <mat-form-field class="full-width">
-              <input 
-                type="password"
-                name="password"
-                matInput
-                [formControl]="signupForm.controls['password']"
-                placeholder="Password" 
-                value="">
+              <input type="password" name="password" matInput [formControl]="signupForm.controls['password']"
+                passwordValidator placeholder="Password" value="">
             </mat-form-field>
-            <small 
-              *ngIf="signupForm.controls['password'].hasError('required') && signupForm.controls['password'].touched" 
+            <small *ngIf="signupForm.controls['password'].hasError('required') && signupForm.controls['password'].touched"
               class="form-error-msg"> Password is required </small>
+            <!-- <small [hidden]="!signupForm.controls['password'].errors.patternInvalid"
+              class="form-error-msg"> Password must contains one lowercase character, one uppercase character, one
+              special symbols and length at least 8 characters and maximum of 12</small> -->
           </div>
-          
+
           <div class="">
             <mat-form-field class="full-width">
-              <input
-                type="password"
-                name="confirmPassword"
-                matInput
-                [formControl]="signupForm.controls['confirmPassword']"
-                placeholder="Confirm Password"
-                value="">
+              <input type="password" name="confirmPassword" matInput [formControl]="signupForm.controls['confirmPassword']"
+                passwordValidator placeholder="Confirm Password" value="">
             </mat-form-field>
-            <small *ngIf="signupForm.controls['confirmPassword'].hasError('required') && signupForm.controls['confirmPassword'].touched" class="form-error-msg">Confirm password is required.</small>
-            <small *ngIf="signupForm.controls['confirmPassword'].hasError('equalTo')" class="form-error-msg">Passwords do not math.</small>
+            <small *ngIf="signupForm.controls['confirmPassword'].hasError('required') && signupForm.controls['confirmPassword'].touched"
+              class="form-error-msg">Confirm password is required.</small>
+            <small *ngIf="signupForm.controls['confirmPassword'].hasError('equalTo')" class="form-error-msg">Passwords
+              do not math.</small>
           </div>
-          
-          <div class="pb-1">
-            <mat-checkbox
-              name="agreed"
-              [formControl]="signupForm.controls['agreed']"
-              class="pb-1">I have read and agree to the terms of service.</mat-checkbox>
 
-              <small 
-                *ngIf="signupForm.controls['agreed'].hasError('agreed') && signupForm.controls['agreed'].touched" 
-                class="form-error-msg"> You must agree to the terms and conditions </small>
+          <div class="pb-1">
+            <mat-checkbox name="agreed" [formControl]="signupForm.controls['agreed']" class="pb-1">I have read and
+              agree to the terms of service.</mat-checkbox>
+
+            <small *ngIf="signupForm.controls['agreed'].hasError('agreed') && signupForm.controls['agreed'].touched"
+              class="form-error-msg"> You must agree to the terms and conditions </small>
           </div>
 
           <button mat-raised-button class="mat-primary full-width mb-1" [disabled]="signupForm.invalid">Sign up</button>

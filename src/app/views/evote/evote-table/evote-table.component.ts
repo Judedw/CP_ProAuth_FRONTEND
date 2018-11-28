@@ -219,6 +219,8 @@ export class EvoteTableComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(res => {
+
+      
       if (!res) {
         // if user press cancel.
         return;
@@ -226,6 +228,7 @@ export class EvoteTableComponent implements OnInit, OnDestroy {
       this.loader.open();
 
       if (isNew) {
+      
         this.evoteService.addEvote(res, this.rows).subscribe(
           data => {
             this.rows = data;

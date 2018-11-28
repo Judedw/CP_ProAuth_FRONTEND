@@ -21,6 +21,7 @@ import { SessionsRoutes } from "./sessions.routing";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { ErrorComponent } from "./error/error.component";
 import { UserService } from "./UserService.service";
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { UserService } from "./UserService.service";
     MatCardModule,
     MatCheckboxModule,
     MatIconModule,
+    SharedModule,
     FlexLayoutModule,
     RouterModule.forChild(SessionsRoutes)
   ],
