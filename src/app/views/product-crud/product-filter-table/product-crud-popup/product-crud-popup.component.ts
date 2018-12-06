@@ -5,15 +5,16 @@ import {
   MAT_DATE_FORMATS,
   DateAdapter,
   MAT_DATE_LOCALE,
-  MatSnackBar
+  MatSnackBar,
+  MatAutocompleteSelectedEvent
 } from "@angular/material";
 import { CrudService } from "../../../cruds/crud.service";
 import { Subscription, Observable } from "rxjs";
 import { ResponseModel } from "../../../../model/ResponseModel.model";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { MomentDateAdapter } from "@angular/material-moment-adapter";
-import { debounceTime, switchMap, distinctUntilChanged } from "rxjs/operators";
-import { Clients, Content } from "./../../../../model/ClientModel.model";
+import { debounceTime, switchMap, distinctUntilChanged, startWith, map } from "rxjs/operators";
+import { Clients, Content } from "../../../../model/ClientModel.model";
 
 import { DateValidator } from "../../../../utility/dateValidator";
 
@@ -22,6 +23,7 @@ import * as moment from "moment";
 import { SurveyService } from "../../../survey/survey.service";
 import { environment } from "environments/environment.prod";
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
+import { ProductCommonComponent } from "../../product-crud-common.component";
 
 export const MY_FORMATS = {
   parse: {
@@ -38,7 +40,7 @@ export const MY_FORMATS = {
 @Component({
   selector: "app-product-crud-popup",
   templateUrl: "./product-crud-popup.component.html",
-  animations : egretAnimations,
+  animations: egretAnimations,
   providers: [
     {
       provide: DateAdapter,
@@ -48,7 +50,8 @@ export const MY_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
   ]
 })
-export class ProductCrudPopupComponent implements OnInit {
+export class ProductCrudPopupComponent extends ProductCommonComponent implements OnInit {
+  // export class ProductCrudPopupComponent implements OnInit {
   public productForm: FormGroup;
   public clients: any[];
   public getClientSub: Subscription;
@@ -58,8 +61,6 @@ export class ProductCrudPopupComponent implements OnInit {
   imageFile: File;
   imageUrl: any = "assets/images/placeholder.jpg";
 
-  getAllSurveySub: Subscription;
-  surveyRows: any[];
 
   // image uploader related properties
   public uploader: FileUploader = new FileUploader({ url: "upload_url" });
@@ -72,15 +73,25 @@ export class ProductCrudPopupComponent implements OnInit {
   remainImagesID = []
   currentTotalImageCount: number = 0;
 
+  getAllSurveySub: Subscription;
+  surveyRows: any[];
+
+  surveyFilteredOptions: Observable<string[]>;
+  surveys: string[] = [];
+  surveyIDs: string[] = [];
+  selectedSurveyID: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ProductCrudPopupComponent>,
-    private clientService: CrudService,
-    private surveyService: SurveyService,
+    public clientService: CrudService,
+    public surveyService: SurveyService,
     private fb: FormBuilder,
     public snackBar: MatSnackBar
-  ) { }
+  ) {
+    super(surveyService, clientService);
+  }
+
 
   ngOnInit() {
 
@@ -107,25 +118,94 @@ export class ProductCrudPopupComponent implements OnInit {
     );
   }
 
-  getClientSuggestions() {
-    this.getClientSub = this.clientService
-      .getClientSuggestions()
-      .subscribe(data => {
-        this.response = data;
-        this.clients = this.response.content;
+  public surveyOnChange() {
+    this.surveyFilteredOptions = this.productForm.controls['surveyId'].valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._surveyFilter(value))
+      );
+    this.onSelectionChanged();
+  }
+
+  private _surveyFilter(value: string): string[] {
+    if (value === "" || isNaN(Number(value))) {
+      const filterValue = value.toLowerCase();
+      return this.surveys.filter(option => option.toLowerCase().includes(filterValue));
+    }
+  }
+
+  onSelectionChanged() {
+    const input_value = this.productForm.controls['surveyId'].value;
+    const id = this.surveyIDs.indexOf(input_value);
+
+    if (id > -1) {
+      this.productForm.controls['surveyId'].setValue(this.surveys[id]);
+      this.selectedSurveyID = input_value;
+      console.log("===================== ID: - " + this.selectedSurveyID);
+      console.log("===================== Value: - " + this.surveys[id]);
+    } else {
+      console.log("============ else ==================");
+    }
+  }
+
+  checkValue(event) {
+    if (!(this.surveys.indexOf(event.currentTarget.value) > -1)) {
+      this.productForm.controls['surveyId'].setValue("");
+    }
+  }
+
+  getAllSurvey() {
+    this.getAllSurveySub = this.surveyService
+      .getAllSurveys()
+      .subscribe(successResp => {
+        successResp.content.forEach(element => {
+          this.surveys.push(element.topic);
+          this.surveyIDs.push(element.id);
+          this.surveyOnChange();
+        });
       });
   }
 
-  getAllClients() {
-    this.getClientSub = this.clientService.getItems().subscribe(data => {
-      this.response = data;
-      this.clients = this.response.content;
-    });
-  }
+  // getAllSurvey() {
+  //   this.getAllSurveySub = this.surveyService
+  //     .getAllSurveys()
+  //     .subscribe(successResp => {
+  //       this.surveyRows = successResp.content;
+  //     });
+  // }
+
+  // getAllSurvey() {
+  //   this.getAllSurveySub = this.surveyService
+  //     .getAllSurveys()
+  //     .subscribe(successResp => {
+  //       successResp.content.forEach(element => {
+  //         this.surveys.push(element.topic);
+  //         this.surveyIDs.push(element.id);
+  //         this.surveyOnChange();
+  //       });
+  //     });
+  // }
+
+  // getClientSuggestions() {
+  //   this.getClientSub = this.clientService
+  //     .getClientSuggestions()
+  //     .subscribe(data => {
+  //       this.response = data;
+  //       this.clients = this.response.content;
+  //     });
+  // }
+
+  // getAllClients() {
+  //   this.getClientSub = this.clientService.getItems().subscribe(data => {
+  //     this.response = data;
+  //     this.clients = this.response.content;
+  //   });
+  // }
 
   buildProductForm(fieldItem) {
     const client = fieldItem.client;
     const clientId = client ? client.id : null;
+
 
     this.productForm = this.fb.group({
       client: [clientId || "", { disabled: !this.data.isNew }],
@@ -138,6 +218,7 @@ export class ProductCrudPopupComponent implements OnInit {
       surveyId: [fieldItem.surveyId || null],
       file: [fieldItem.file || ""]
     });
+
   }
 
   submit() {
@@ -225,7 +306,7 @@ export class ProductCrudPopupComponent implements OnInit {
     if (this.remainImagesID.length < index + 1) {
       this.newlySelectedFileList.splice(index - this.remainImagesID.length, 1);
     } else {
-      this.remainImagesID.splice(index,1);
+      this.remainImagesID.splice(index, 1);
     }
   }
 
@@ -235,8 +316,10 @@ export class ProductCrudPopupComponent implements OnInit {
     console.log("--------------- newlySelectedFileList ------------------");
     let input: FormData = new FormData();
     if (formvalue.surveyId) {
-      input.append("surveyId", formvalue.surveyId);
+      input.append("surveyId", this.selectedSurveyID);
     }
+    console.log("========================" + formvalue.surveyId);
+
 
     input.append("file", this.imageFile);
     input.append("code", formvalue.code);
@@ -251,7 +334,7 @@ export class ProductCrudPopupComponent implements OnInit {
     input.append("description", formvalue.description);
     input.append("batchNumber", formvalue.batchNumber);
 
-    if(this.remainImagesID != null && this.remainImagesID.length > 0){
+    if (this.remainImagesID != null && this.remainImagesID.length > 0) {
       input.append("remainImagesID", this.remainImagesID.toString());
     }
 
@@ -266,13 +349,6 @@ export class ProductCrudPopupComponent implements OnInit {
     return input;
   }
 
-  getAllSurvey() {
-    this.getAllSurveySub = this.surveyService
-      .getAllSurveys()
-      .subscribe(successResp => {
-        this.surveyRows = successResp.content;
-      });
-  }
 }
 
 export class ProductCreationRequest {

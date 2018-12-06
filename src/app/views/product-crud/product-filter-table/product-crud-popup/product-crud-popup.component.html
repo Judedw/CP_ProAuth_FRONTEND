@@ -21,8 +21,7 @@
 
       <div fxFlex="33" class="pr-1">
         <mat-form-field class="full-width">
-          <input matInput [formControl]="productForm.controls['code']" required name="proCode"
-            positiveNumberAndLetterOnly placeholder="Product Code">
+          <input matInput [formControl]="productForm.controls['code']" required name="proCode" positiveNumberAndLetterOnly placeholder="Product Code">
         </mat-form-field>
       </div>
 
@@ -34,22 +33,21 @@
 
       <div fxFlex="34" class="pr-1">
         <mat-form-field class="full-width">
-          <input matInput name="desc" [formControl]="productForm.controls['description']" required name="description"
-            placeholder="Description">
+          <input matInput name="desc" [formControl]="productForm.controls['description']" required name="description" placeholder="Description">
         </mat-form-field>
       </div>
 
       <div fxFlex="33" class="pr-1">
         <mat-form-field class="full-width">
-          <input matInput name="batchNumber" [formControl]="productForm.controls['batchNumber']"
-            positiveNumberAndLetterOnly required placeholder="Batch Number">
+          <input matInput name="batchNumber" [formControl]="productForm.controls['batchNumber']" positiveNumberAndLetterOnly required
+            placeholder="Batch Number">
         </mat-form-field>
       </div>
 
       <div fxFlex="33" class="pr-1">
         <mat-form-field class="full-width">
-          <input type="number" matInput name="quantity" [formControl]="productForm.controls['quantity']"
-            positiveNumberOnly required placeholder="Quantity">
+          <input type="number" matInput name="quantity" [formControl]="productForm.controls['quantity']" positiveNumberOnly required
+            placeholder="Quantity">
         </mat-form-field>
       </div>
 
@@ -66,12 +64,22 @@
 
       <div fxFlex="34" class="pr-1">
 
-        <mat-form-field class="full-width">
+        <!-- <mat-form-field class="full-width">
           <mat-select [formControl]="productForm.controls['surveyId']" placeholder="Select A Survey">
             <mat-option>none</mat-option>
             <mat-option *ngFor="let survey of surveyRows" [value]="survey.id">{{survey.topic}}</mat-option>
           </mat-select>
+        </mat-form-field> -->
+
+        <mat-form-field class="full-width">
+          <input type="text" placeholder="Select A Survey" matInput [formControl]="productForm.controls['surveyId']" [matAutocomplete]="auto" (focusout)="checkValue($event)">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+            <mat-option *ngFor="let option of surveyFilteredOptions | async; let i = index" [value]="surveyIDs[i]">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
+
       </div>
 
 
@@ -98,18 +106,16 @@
       <!-- --------- New Code ----------------- -->
 
       <!-- --------- hidden file input --------- -->
-      <input (change)="onSelectFile($event)" #productImgs type="file" [formControl]="productForm.controls['file']"
-        multiple style="display: none" />
+      <input (change)="onSelectFile($event)" #productImgs type="file" [formControl]="productForm.controls['file']" multiple style="display: none"
+      />
 
 
       <!-- --------- file input click button --------- -->
       <!-- *ngIf="data.isNew"  -->
       <div layout-margin layout-padding>
-        <button mat-raised-button class="mr-1" (click)="productImgs.click()"
-        [disabled]="this.maxUploadableFileCount === null || this.maxUploadableFileCount < 1 ?
+        <button mat-raised-button class="mr-1" (click)="productImgs.click()" [disabled]="this.maxUploadableFileCount === null || this.maxUploadableFileCount < 1 ?
         (false) :
-        (this.currentTotalImageCount === this.maxUploadableFileCount)"
-          type="button">
+        (this.currentTotalImageCount === this.maxUploadableFileCount)" type="button">
           Browse Images
           <span *ngIf="this.maxUploadableFileCount === null || this.maxUploadableFileCount < 1 ?
           (false) :
@@ -121,7 +127,8 @@
       <div id="cp_image_preview_container" fxLayout="row" fxLayoutWrap="wrap" layout-align="center">
 
         <!-- --------- start card --------- -->
-        <div [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}" *ngFor='let url of urls; let i = index' fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50" style="display: flex;">
+        <div [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}" *ngFor='let url of urls; let i = index' fxFlex="100" fxFlex.gt-sm="25"
+          fxFlex.sm="50" style="display: flex;">
           <mat-card class="p-0">
             <button type="button" class="close" aria-label="Close" (click)="removeSelectedImg(i)">
               <span aria-hidden="true">&times;</span>
